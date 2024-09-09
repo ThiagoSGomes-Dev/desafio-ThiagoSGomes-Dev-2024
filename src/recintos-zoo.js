@@ -1,35 +1,27 @@
+import { Animais } from "./model/animais.js";
+import { Recinto } from "./model/recintos.js";
+
 class RecintosZoo {
   constructor() {
-    this.recintos = [
-      {
-        numero: 1,
-        bioma: "savana",
-        tamanho: 10,
-        animais: {
-          macaco: 3,
-          leão: 1,
-        },
-      },
-      { numero: 2, bioma: "floresta", tamanho: 5, animais: {} },
-      { numero: 3, bioma: "savana e rio", tamanho: 7, animais: { gazela: 1 } },
-      { numero: 4, bioma: "rio", tamanho: 9, animais: { leão: 1 } },
-    ];
+    this.recintos = new Recinto();
 
-    // this.recintos[1].animais.jaguar = 2;
+    // this.recintos.getRecinto()[1].animais.jaguar = 2;
 
-    this.animais = {
-      leao: { tamanho: 3, bioma: "savana" },
-      leopardo: { tamanho: 2, bioma: "savana" },
-      crocodilo: { tamanho: 1, bioma: "rio" },
-      macaco: { tamanho: 2, biomas: ["savana", "floresta"] },
-      gazela: { tamanho: 4, biomas: ["savana", "rio"] },
-    };
+    this.animais = new Animais();
 
-    // this.animais.leao.tamanho = 10;
+    // this.animais.getAnimais().leao.tamanho = 10;
+    // this.animais.getAnimais().gazela.tamanho = 3;
   }
 
   analisaRecintos(animal, quantidade) {
-    const animaisInfo = this.animais;
+    // const animaisInfo = this.animais.getAnimais();
+    const animaisInfo = this.animais.getAnimais()[animal.toLowerCase()];
+    if (!animaisInfo) {
+      return { erro: "Animal inválido" };
+    }
+    if (!Number.isInteger(quantidade) || quantidade <= 0) {
+      return { erro: "Quantidade inválida" };
+    }
 
     return animaisInfo;
   }
