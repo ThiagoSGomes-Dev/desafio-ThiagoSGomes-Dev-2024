@@ -16,6 +16,7 @@ class RecintosZoo {
   analisaRecintos(animal, quantidade) {
     // const animaisInfo = this.animais.getAnimais();
     const animaisInfo = this.animais.getAnimais()[animal.toLowerCase()];
+    console.log(animaisInfo);
     if (!animaisInfo) {
       return { erro: "Animal inválido" };
     }
@@ -32,15 +33,22 @@ class RecintosZoo {
           ? animaisInfo.biomas.includes(recinto.bioma)
           : recinto.bioma === animaisInfo.bioma;
 
+        console.log(animaisInfo.biomas.includes(recinto.bioma));
+
         const espacoAtual =
           recinto.tamanho - animalRecinto * animaisInfo.tamanho;
 
-        const espacoDisponivel =
-          espacoAtual - (Object.keys(recinto.animais).length > 0 ? 1 : 0);
+        const temOutrosAnimais = Object.keys(recinto.animais).some(
+          (animalRecinto) => animalRecinto !== animal.toLowerCase()
+        );
+
+        const espacoExtraOcupado = temOutrosAnimais
+          ? espacoAtual - 1
+          : espacoAtual;
 
         return (
           biomaEspecifico &&
-          espacoDisponivel >= quantidade * animaisInfo.tamanho
+          espacoExtraOcupado >= quantidade * animaisInfo.tamanho
         );
       })
       .map((recinto) => {
@@ -48,12 +56,16 @@ class RecintosZoo {
         const espacoAtual =
           recinto.tamanho - animalRecinto * animaisInfo.tamanho;
 
-        // Ajuste do espaço disponível
-        const espacoDisponivel =
-          espacoAtual - (Object.keys(recinto.animais).length > 0 ? 1 : 0);
+        const temOutrosAnimais = Object.keys(recinto.animais).some(
+          (animalRecinto) => animalRecinto !== animal.toLowerCase()
+        );
+
+        const espacoExtraOcupado = temOutrosAnimais
+          ? espacoAtual - 1
+          : espacoAtual;
 
         return `Recinto ${recinto.numero} (espaço livre: ${
-          espacoDisponivel - quantidade * animaisInfo.tamanho
+          espacoExtraOcupado - quantidade * animaisInfo.tamanho
         } total: ${recinto.tamanho})`;
       });
 
@@ -61,7 +73,7 @@ class RecintosZoo {
       return { erro: "Não há recinto viável" };
     }
 
-    return recintosViaveis;
+    return { recintosViaveis };
   }
 }
 

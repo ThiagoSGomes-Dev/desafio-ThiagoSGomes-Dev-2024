@@ -3,9 +3,10 @@ class Animais {
     this.animais = {
       leao: { tamanho: 3, bioma: "savana" },
       leopardo: { tamanho: 2, bioma: "savana" },
-      crocodilo: { tamanho: 1, bioma: "rio" },
+      crocodilo: { tamanho: 3, bioma: "rio" },
       macaco: { tamanho: 2, biomas: ["savana", "floresta"] },
-      gazela: { tamanho: 4, biomas: ["savana", "rio"] },
+      gazela: { tamanho: 2, bioma: "savana" },
+      hipopotamo: { tamanho: 4, biomas: ["savana", "rio"] },
     };
   }
 
