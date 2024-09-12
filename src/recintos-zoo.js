@@ -14,26 +14,29 @@ class RecintosZoo {
   }
 
   analisaRecintos(animal, quantidade) {
-    // const animaisInfo = this.animais.getAnimais();
     const animaisInfo = this.animais.getAnimais()[animal.toLowerCase()];
-    console.log(animaisInfo);
+
     if (!animaisInfo) {
       return { erro: "Animal inválido" };
     }
     if (!Number.isInteger(quantidade) || quantidade <= 0) {
       return { erro: "Quantidade inválida" };
     }
-    // const recintoInfo = this.recintos.getRecinto();
+
     const recintosViaveis = this.recintos
       .getRecinto()
       .filter((recinto) => {
         const animalRecinto = recinto.animais[animal.toLowerCase()] || 0;
 
-        const biomaEspecifico = animaisInfo.biomas
-          ? animaisInfo.biomas.includes(recinto.bioma)
-          : recinto.bioma === animaisInfo.bioma;
+        const biomaCompativel = this.recintos
+          .getRecinto()
+          .map((recinto) => recinto.bioma);
 
-        console.log(animaisInfo.biomas.includes(recinto.bioma));
+        const biomaEspecifico = Array.isArray(recinto.bioma)
+          ? recinto.bioma.some((bioma) => animaisInfo.biomas.includes(bioma))
+          : animaisInfo.biomas.includes(recinto.bioma);
+
+        // console.log(this.recintos.getRecinto().map((recinto) => recinto.bioma));
 
         const espacoAtual =
           recinto.tamanho - animalRecinto * animaisInfo.tamanho;
@@ -53,6 +56,7 @@ class RecintosZoo {
       })
       .map((recinto) => {
         const animalRecinto = recinto.animais[animal.toLowerCase()] || 0;
+
         const espacoAtual =
           recinto.tamanho - animalRecinto * animaisInfo.tamanho;
 
