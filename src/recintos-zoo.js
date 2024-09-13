@@ -16,36 +16,50 @@ class RecintosZoo {
   analisaRecintos(animal, quantidade) {
     // const animaisInfo = this.animais.getAnimais();
     const animaisInfo = this.animais.getAnimais()[animal.toLowerCase()];
-    console.log(animaisInfo);
+    // console.log(quantidade);
+    console.log(animaisInfo.bioma);
+    // console.log(animaisInfo.tamanho);
+
     if (!animaisInfo) {
       return { erro: "Animal inválido" };
     }
     if (!Number.isInteger(quantidade) || quantidade <= 0) {
       return { erro: "Quantidade inválida" };
     }
+
+    // if (!animaisInfo.biomas || !Array.isArray(animaisInfo.biomas)) {
+    //   return { erro: "Dados de bioma inválidos para o animal" };
+    // }
     // const recintoInfo = this.recintos.getRecinto();
     const recintosViaveis = this.recintos
       .getRecinto()
       .filter((recinto) => {
         const animalRecinto = recinto.animais[animal.toLowerCase()] || 0;
+        console.log(animaisInfo.biomas);
 
-        const biomaEspecifico = animaisInfo.biomas
-          ? animaisInfo.biomas.includes(recinto.bioma)
-          : recinto.bioma === animaisInfo.bioma;
+        const biomaEspecifico = Array.isArray(recinto.bioma)
+          ? recinto.bioma.some((bioma) => animaisInfo.bioma.includes(bioma))
+          : animaisInfo.bioma.includes(recinto.bioma);
 
-        console.log(animaisInfo.biomas.includes(recinto.bioma));
+        // const biomaEspecifico = animaisInfo.biomas
+        //   ? animaisInfo.biomas.includes(recinto.bioma)
+        //   : recinto.bioma === animaisInfo.bioma;
+
+        // console.log(biomaEspecifico);
+        // console.log(animaisInfo.biomas.includes(recinto.bioma));
 
         const espacoAtual =
           recinto.tamanho - animalRecinto * animaisInfo.tamanho;
+        // console.log(espacoAtual);
 
         const temOutrosAnimais = Object.keys(recinto.animais).some(
           (animalRecinto) => animalRecinto !== animal.toLowerCase()
         );
-
+        // console.log(temOutrosAnimais);
         const espacoExtraOcupado = temOutrosAnimais
           ? espacoAtual - 1
           : espacoAtual;
-
+        // console.log(espacoExtraOcupado);
         return (
           biomaEspecifico &&
           espacoExtraOcupado >= quantidade * animaisInfo.tamanho
